@@ -1,0 +1,111 @@
+PHP5 OOP Exam
+-------------
+
+
+Problem Statement:
+
+    Create the following classes and implement the requirements below.
+
+Goal: 
+
+    Execute (if not all most of) the business logic below. See main.php for the 
+sample usage.
+
+
+--------------
+Business logic
+--------------
+* Create a dummy task and display it.
+* Create a task with only title then display.
+* Create a task with title and description then display.
+* Create a task with title, description and status then display.
+* Create a task then set the title, description and status fluidly.
+* Create a task with random invalid status and display the exception.
+* Create a task then set the status to open and display the exception.
+* Create a task then close it and display.
+* Create a task then start, complete and close it.
+* Create a task and mark it completed and display the exception.
+* Create a started task then complete and close it.
+* Create a started task then start it and display the exception.
+* Create a completed task then reopen it.
+* Create a completed task then close it.
+* Create a completed task then start it and display the exception.
+* Create a completed task then mark it complete and display the exception.
+* Create a closed task then reopen it.
+* Create a closed task then start it and display the exception.
+* Create a closed task then mark it complete and display the exception.
+* Create a closed task then close it and display the exception.
+** Create a task and set an invalid status without getting an exception and display.
+
+
+--------------------
+Requirements details
+--------------------
+
+Files/folder
+------------
+* autoload.php
+ - Create your autoloader function here.
+ - You can use composer to handle this.
+
+* main.php
+ - Execute workflow/business logic here.
+ - You can use phpunit to test the logic.
+
+* src/
+ - put your classes here
+
+Classes
+-------
+ * Exam\TaskInterface
+ * Exam\Task
+ * Exam\StartedTask (status: in progress)
+ * Exam\CompletedTask (status: done, method: reOpen, you can use trait)
+ * Exam\ClosedTask (status: closed, method: reOpen, you can use trait)
+ * Exam\Dummy\Task
+ * Exam\Printer (method: printTask, cannot be instantiated)
+ * Exam\StatusException
+
+Task Fields (must all be private)
+----------------------------
+ * title (string)
+ * description (string: optional)
+ * status (string, default: open)
+
+Status (must be defined as constants in psr)
+--------------------------------------------
+ * open 
+ * in progress
+ * completed
+ * closed
+
+Methods
+-------
+ * constructor
+ * fluent getter/setter
+ * isOpen
+ * isStarted
+ * isCompleted
+ * isClosed
+ * start
+ * complete
+ * close
+
+Status workflow (must throw StatusException if not followed)
+------------------------------------------------------------
+ * open -> in progress or closed
+ * in progress -> any status
+ * done -> open or closed
+ * closed -> open
+
+Print task (must use Printer)
+-----------------------------
+ * w/ description: title - description (status)
+ * w/o description: title (status)
+ * dummy task: fully classified class name: dummy title - dummy description (dummy status)
+
+StatusException
+---------------
+ * if same status: "#task.title" is already "#status"
+ * if status does not follow the workflow: Incorrect workflow detected: #from_status to #to_status
+ * if status given is not one the of the defined: Invalid status provided: #status

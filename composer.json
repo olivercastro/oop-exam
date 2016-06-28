@@ -1,0 +1,22 @@
+{
+    "name": "arcanys/php5-oop-exam",
+    "license": "proprietary",
+    "type": "project",
+    "description": "PHP5 OOP exam for applicants",
+    "authors": [
+        {
+            "name": "Randolph Roble",
+            "email": "r.roble@arcanys.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "": "src/" }
+    },
+    "require": {
+        "php": ">=5.4",
+        "phpunit/phpunit": "~3.7"
+    },
+    "config": {
+        "bin-dir": "bin"
+    }
+}
