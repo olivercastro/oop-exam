@@ -13,8 +13,16 @@ class Task implements TaskInterface
     {
         $this->title = $title;
         $this->description = $description;
-        if()
-        $this->status = $status;
+
+        if(is_null($status)){
+            $this->status = Task::STATUS_OPEN;
+        }else{
+            if(!in_array($status, array(Task::STATUS_CLOSED, Task::STATUS_COMPLETED, Task::STATUS_OPEN, Task::STATUS_IN_PROGRESS))){
+                throw new \Exception(StatusException::ERR_INVALID_STATUS);
+            }
+            $this->status = $status;
+        }
+
     }
 
     public function getDescription()
@@ -60,10 +68,44 @@ class Task implements TaskInterface
         $this->description = $desc;
         return $this;
     }
-
+    public function setStatus($status){
+        if($status == $this->status)
+            throw new \Exception(StatusException::ERR_SAME_STATUS);
+        $this->status = $status;
+        return $this;
+    }
     public function close(){
-        if($this->isCompleted()){
+        if($this->isCompleted() || $this->isOpen()){
             $this->status = Task::STATUS_CLOSED;
         }
+        if($this->isClosed()){
+            throw new \Exception($this->title . ' is already closed');
+        }
+    }
+
+    public function start(){
+        if($this->status == Task::STATUS_IN_PROGRESS){
+            throw new \Exception('"' . $this->title . '" is already "in progress"');
+        }
+        if($this->status == Task::STATUS_COMPLETED){
+            throw new \Exception(StatusException::ERR_INVALID_WORKFLOW);
+        }
+        if($this->status == Task::STATUS_CLOSED){
+            throw new \Exception(StatusException::ERR_INVALID_WORKFLOW);
+        }
+        $this->status = Task::STATUS_IN_PROGRESS;
+    }
+
+    public function complete(){
+        if($this->status == Task::STATUS_OPEN){
+            throw new \Exception(StatusException::ERR_INVALID_WORKFLOW);
+        }
+        if($this->status == Task::STATUS_CLOSED){
+            throw new \Exception(StatusException::ERR_INVALID_WORKFLOW);
+        }
+        if($this->status == Task::STATUS_COMPLETED){
+            throw new \Exception($this->title . ' is already completed');
+        }
+        $this->status = Task::STATUS_COMPLETED;
     }
 }

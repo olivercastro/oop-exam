@@ -28,6 +28,11 @@ var_dump($taskWithTitleDesc);
 
 $taskWithTitleDesStatus = new Task('hello','description',Task::STATUS_OPEN);
 
-var_dump($taskWithTitleDesStatus);
+//var_dump($taskWithTitleDesStatus);
 
-$task4 = new Task();
+//$task4 = new Task('testing','testing','testing');
+
+$task5 = new Task('testing');
+var_dump($task5);
+$task5->close();
+var_dump($task5);
